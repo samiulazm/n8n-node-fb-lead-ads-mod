@@ -258,7 +258,7 @@ export class FacebookLeadAdsTrigger implements INodeType {
 						facebookEntityDetail.call(
 							this,
 							event.leadgen_id,
-							'field_data,created_time,ad_id,ad_name,adset_id,adset_name,form_id',
+							'field_data,created_time,ad_id,ad_name,adset_id,adset_name,campaign_id,campaign_name,form_id,form_name,is_organic,platform,inbox_url,organic_lead_id,retailer_item_id',
 						) as Promise<FacebookFormLeadData>,
 						facebookEntityDetail.call(
 							this,
@@ -272,6 +272,7 @@ export class FacebookLeadAdsTrigger implements INodeType {
 					if (simplifyOutput) {
 						return {
 							id: lead.id,
+							created_time: lead.created_time,
 							data: lead.field_data.reduce(
 								(acc, field) => ({
 									...acc,
@@ -280,26 +281,41 @@ export class FacebookLeadAdsTrigger implements INodeType {
 								{},
 							),
 							form: {
-								id: form.id,
-								name: form.name,
+								id: lead.form_id,
+								name: lead.form_name,
 								locale: form.locale,
 								status: form.status,
 							},
 							ad: { id: lead.ad_id, name: lead.ad_name },
 							adset: { id: lead.adset_id, name: lead.adset_name },
+							campaign: { id: lead.campaign_id, name: lead.campaign_name },
 							page: form.page,
-							created_time: lead.created_time,
+							is_organic: lead.is_organic,
+							platform: lead.platform,
+							inbox_url: lead.inbox_url,
+							organic_lead_id: lead.organic_lead_id,
+							retailer_item_id: lead.retailer_item_id,
 						};
 					}
 
 					return {
 						id: lead.id,
+						created_time: lead.created_time,
 						field_data: lead.field_data,
-						form,
+						form: {
+							id: lead.form_id,
+							name: lead.form_name,
+							details: form,
+						},
 						ad: { id: lead.ad_id, name: lead.ad_name },
 						adset: { id: lead.adset_id, name: lead.adset_name },
+						campaign: { id: lead.campaign_id, name: lead.campaign_name },
 						page: form.page,
-						created_time: lead.created_time,
+						is_organic: lead.is_organic,
+						platform: lead.platform,
+						inbox_url: lead.inbox_url,
+						organic_lead_id: lead.organic_lead_id,
+						retailer_item_id: lead.retailer_item_id,
 						event,
 					};
 				}),

@@ -95,7 +95,15 @@ export interface FacebookFormLeadData {
 	ad_name: string;
 	adset_id: string;
 	adset_name: string;
+	campaign_id: string;
+	campaign_name: string;
 	form_id: string;
+	form_name: string;
+	is_organic: boolean;
+	platform: string;
+	inbox_url?: string;
+	organic_lead_id?: string;
+	retailer_item_id?: string;
 	field_data: [
 		{
 			name: string;
